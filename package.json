@@ -1,0 +1,22 @@
+{
+  "name": "mygram",
+  "version": "0.1.0",
+  "description": "Comparte tus fotos",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daguiheso/MyGram.git"
+  },
+  "keywords": [
+    "js"
+  ],
+  "author": "Daniel Hernandez @daviheso",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/daguiheso/MyGram/issues"
+  },
+  "homepage": "https://github.com/daguiheso/MyGram#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
