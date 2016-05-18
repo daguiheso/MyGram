@@ -18,7 +18,8 @@
   "homepage": "https://github.com/daguiheso/MyGram#readme",
   "dependencies": {
     "express": "^4.13.4",
-    "materialize-css": "^0.97.6"
+    "materialize-css": "^0.97.6",
+    "pug": "^2.0.0-alpha7"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
