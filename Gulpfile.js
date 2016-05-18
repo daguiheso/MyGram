@@ -31,6 +31,7 @@ function compile(watch) {
 		bundle
 			.transform(babel)  /*que lo transforme utilizando babel - sin esta linea no utilizariamos ecma6*/
 			.bundle()  /*genera ese bundle*/
+			.on('error', function (err) {console.log(err); this.emit('end')	})
 			.pipe(source('index.js')) /* transformacion de lo que nos mando bundle() de browserify para que lo entienda gulp*/
 			.pipe(rename('app.js'))
 			.pipe(gulp.dest('public'))

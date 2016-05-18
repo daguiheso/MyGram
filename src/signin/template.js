@@ -1,12 +1,11 @@
 var yo = require('yo-yo');
 var landing = require('../landing');
 
-var signupForm = yo`<div class="col s12 m7">
+var signinForm = yo`<div class="col s12 m7">
 						<div class="row">
 							<div class="signup-box">
 								<h1 class="mygram">MyGram</h1>
-								<form action="" class="signup-form">
-									<h2>Registrate para ver fotos de tus amigos estudiantes</h2>
+								<form class="signup-form">
 									<div class="section">
 										<a href="" class="btn btn-fb hide-on-small-only">Iniciar sesión con Facebook</a>
 										<a href="" class="btn btn-fb hide-on-med-and-up">Iniciar sesión</a>
@@ -15,20 +14,18 @@ var signupForm = yo`<div class="col s12 m7">
 										
 									</div>
 									<div class="section">
-										<input type="email" name="email" placeholder="Correo electronico">
-										<input type="text" name="name" placeholder="Nombre completo">
 										<input type="text" name="usernamee" placeholder="Nombre de usuario">
 										<input type="password" name="password" placeholder="Contraseña">
-										<button type="submit" class="btn waves-effect waves-light btn-signup">Regístrate</button>
+										<button type="submit" class="btn waves-effect waves-light btn-signup">Iniciar Sesion</button>
 									</div>
 								</form>
 							</div>								
 						</div>
 						<div class="row">
 							<div class="login-box">
-								¿Tienes una cuenta? <a href="/signin">Entrar</a>
+								¿No Tienes una cuenta? <a href="/signup">Regístrate</a>
 							</div>
 						</div>
 					</div>`;
 
-module.exports = landing(signupForm);
+module.exports = landing(signinForm);
