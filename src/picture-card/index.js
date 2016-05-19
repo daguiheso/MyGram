@@ -1,5 +1,17 @@
 var yo = require('yo-yo');
-var moment = require('moment');
+
+if (!window.Intl) {
+    window.Intl = require('intl'); // polyfill for `Intl`
+    require('intl/locale-data/jsonp/en-US.js');
+    require('intl/locale-data/jsonp/es.js');
+}
+
+var IntlRelativeFormat = window.IntlRelativeFormat = require('intl-relativeformat');
+
+require('intl-relativeformat/dist/locale-data/en.js');
+require('intl-relativeformat/dist/locale-data/es.js');
+
+var rf = new IntlRelativeFormat('en-US');
 
 module.exports = function pictureCard(pic) {
 	var el;
@@ -14,7 +26,7 @@ module.exports = function pictureCard(pic) {
 					    		<img src="${picture.user.avatar}" class="avatar" alt="" />
 					    		<span class="username">${picture.user.username}</span>
 					    	</a>
-					    	<small class="right time">${moment(picture.createdAt).fromNow()}</small>
+					    	<small class="right time">${rf.format(picture.createdAt)}</small>
 					    	<p>
 					    		<a href="#" class="left" onclick=${like.bind(null, true)}>
 					    			<i class="fa fa-heart-o" aria-hidden="true"></i>
@@ -29,7 +41,6 @@ module.exports = function pictureCard(pic) {
 	}
 
     function like (liked) {
-    	debugger
     	pic.liked = liked;
     	pic.likes += liked ? 1 : -1;
     	var newEl = render(pic);
