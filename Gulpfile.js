@@ -25,7 +25,7 @@ gulp.task('assets', function () {
 
 
 function compile(watch) {
-	var bundle = watchify(browserify('./src/index.js')) /*ruta de archivo que browserify procesara*/
+	var bundle = watchify(browserify('./src/index.js', {debug: true})) /*ruta de archivo que browserify procesara*/
 
 	function rebundle() {
 		bundle
@@ -39,7 +39,7 @@ function compile(watch) {
 
 	if (watch) {
 		bundle.on('update', function () {
-			console.log('--> Bundling...')
+			console.log('--> Bundling...');
 			rebundle();
 		})
 	}
@@ -48,10 +48,14 @@ function compile(watch) {
 }
 
 /*procesar src/index.js y lo transforme utilizando browserify y bebelify*/
-gulp.task('build', function () { return compile(); });
+gulp.task('build', function () { 
+	return compile(); 
+});
 
 /*procesar y se mantiene escuchando a src/index.js y lo transforme utilizando browserify y bebelify*/
-gulp.task('watch', function () { return compile(true); });
+gulp.task('watch', function () { 
+	return compile(true); 
+});
 
 /*default tarea*/
 gulp.task('default', ['styles', 'assets', 'build'])

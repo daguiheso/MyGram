@@ -6208,7 +6208,7 @@ body {
   color: #125688;
   font-family: 'Montserrat', sans-serif; }
 
-#main-container {
+.landing {
   margin: 30px auto; }
 
 .iphone {
@@ -6255,5 +6255,5 @@ body {
   box-shadow: none;
   border-bottom: 1px solid #edeeee; }
 
-#main-container {
-  margin: 0; }
+.timeline {
+  padding: 30px 0; }
