@@ -4,7 +4,7 @@ $secondary-color: #125688;
 
 body {
 	background: #fafafa;
-	color: #125688;
+	color: $secondary-color;
 	font-family: 'Montserrat', sans-serif;
 }
 #main-container	{
@@ -25,9 +25,10 @@ body {
 	padding: 10px 0;
 	text-align: center;
 }
-.signup-box .mygram {
+.mygram {
 	font-family: 'Oleo Script', cursive;
 	font-size: 42px;
+	color: $secondary-color !important;
 }
 .signup-form {
 	width: 65%;
@@ -45,7 +46,16 @@ body {
 	background-color: #2d6599;
 }
 .signup-form .btn.btn-signup {
-	background-color: #125688;
+	background-color: $secondary-color;
 }
 
+.header {
+	background-color: white;
+	color: $secondary-color;
+	box-shadow: none;
+	border-bottom: 1px solid #edeeee;
+}
 
+#main-container {
+	margin: 0;
+}

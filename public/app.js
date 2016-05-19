@@ -2158,15 +2158,42 @@ module.exports = [
 
 },{}],15:[function(require,module,exports){
 var page = require('page');
+var empty = require('empty-element');
+var template = require('./template');
 var title = require('title');
 
 page('/', function (ctx, next) {
 	title('MyGram');
 	var main = document.getElementById('main-container');
-	main.innerHTML = '<a href="/signup">Signup</a>';
+	empty(main).appendChild(template);
 });
 
-},{"page":4,"title":7}],16:[function(require,module,exports){
+},{"./template":16,"empty-element":3,"page":4,"title":7}],16:[function(require,module,exports){
+var yo = require('yo-yo');
+
+var template = yo`<nav class="header">
+					<div class="nav-wrapper">
+						<div class="container">
+							<div class="row">
+								<div class="col s12 m6 offset-m1">
+									<a href="" class="brand-logo mygram">MyGram</a>
+								</div>
+								<div class="col s2 m6 push-m10">
+									<a href="#" class="btn btn-large btn-flat dropdown-button" data-activates="drop-user">
+										<i class="fa fa-user" aria-hidden="true"></i>
+									</a>
+									<ul id="drop-user" class="dropdown-content">
+										<li><a href="">Salir</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</nav>`;
+
+module.exports = template;
+
+},{"yo-yo":8}],17:[function(require,module,exports){
 var page = require('page');
 
 require('./homepage');
@@ -2175,7 +2202,7 @@ require('./signin');
 
 page();
 
-},{"./homepage":15,"./signin":18,"./signup":20,"page":4}],17:[function(require,module,exports){
+},{"./homepage":15,"./signin":19,"./signup":21,"page":4}],18:[function(require,module,exports){
 var yo = require('yo-yo');
 
 module.exports = function landing(box) {
@@ -2193,7 +2220,7 @@ module.exports = function landing(box) {
 				</div>`;
 };
 
-},{"yo-yo":8}],18:[function(require,module,exports){
+},{"yo-yo":8}],19:[function(require,module,exports){
 var page = require('page');
 var empty = require('empty-element');
 var template = require('./template');
@@ -2205,7 +2232,7 @@ page('/signin', function (ctx, next) {
 	empty(main).appendChild(template);
 });
 
-},{"./template":19,"empty-element":3,"page":4,"title":7}],19:[function(require,module,exports){
+},{"./template":20,"empty-element":3,"page":4,"title":7}],20:[function(require,module,exports){
 var yo = require('yo-yo');
 var landing = require('../landing');
 
@@ -2216,7 +2243,7 @@ var signinForm = yo`<div class="col s12 m7">
 								<form class="signup-form">
 									<div class="section">
 										<a href="" class="btn btn-fb hide-on-small-only">Iniciar sesión con Facebook</a>
-										<a href="" class="btn btn-fb hide-on-med-and-up">Iniciar sesión</a>
+										<a href="" class="btn btn-fb hide-on-med-and-up"><i class="fa fa-facebook-official"></i> Iniciar sesión</a>
 									</div>
 									<div class="divider">
 										
@@ -2238,7 +2265,7 @@ var signinForm = yo`<div class="col s12 m7">
 
 module.exports = landing(signinForm);
 
-},{"../landing":17,"yo-yo":8}],20:[function(require,module,exports){
+},{"../landing":18,"yo-yo":8}],21:[function(require,module,exports){
 var page = require('page');
 var empty = require('empty-element');
 var template = require('./template');
@@ -2250,7 +2277,7 @@ page('/signup', function (ctx, next) {
 	empty(main).appendChild(template);
 });
 
-},{"./template":21,"empty-element":3,"page":4,"title":7}],21:[function(require,module,exports){
+},{"./template":22,"empty-element":3,"page":4,"title":7}],22:[function(require,module,exports){
 var yo = require('yo-yo');
 var landing = require('../landing');
 
@@ -2262,7 +2289,7 @@ var signupForm = yo`<div class="col s12 m7">
 									<h2>Registrate para ver fotos de tus amigos estudiantes</h2>
 									<div class="section">
 										<a href="" class="btn btn-fb hide-on-small-only">Iniciar sesión con Facebook</a>
-										<a href="" class="btn btn-fb hide-on-med-and-up">Iniciar sesión</a>
+										<a href="" class="btn btn-fb hide-on-med-and-up"><i class="fa fa-facebook-official"></i> Iniciar sesión</a>
 									</div>
 									<div class="divider">
 										
@@ -2286,4 +2313,4 @@ var signupForm = yo`<div class="col s12 m7">
 
 module.exports = landing(signupForm);
 
-},{"../landing":17,"yo-yo":8}]},{},[16]);
+},{"../landing":18,"yo-yo":8}]},{},[17]);
