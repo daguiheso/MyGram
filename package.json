@@ -20,6 +20,7 @@
     "empty-element": "^1.0.0",
     "express": "^4.13.4",
     "materialize-css": "^0.97.6",
+    "moment": "^2.13.0",
     "page": "^1.7.1",
     "pug": "^2.0.0-alpha7",
     "title": "^1.0.0",
