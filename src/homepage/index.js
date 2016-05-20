@@ -2,34 +2,21 @@ var page = require('page');
 var empty = require('empty-element');
 var template = require('./template');
 var title = require('title');
+var request = require('superagent');
 
-
-page('/', function (ctx, next) {
+page('/', loadPictures, function (ctx, next) {
 	title('MyGram');
 	var main = document.getElementById('main-container');
-
-	var pictures = [
-		{
-			user: {
-				username: 'Daniel H',
-				avatar: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/12963889_10208901904603330_6870354961841214887_n.jpg?oh=f819a022e52be19cabaabd89d6cb39ce&oe=57E6B7F5'
-			},
-			url: 'http://materializecss.com/images/office.jpg',
-			likes: 0,
-			liked: false,
-			createdAt: new Date()
-		},
-		{
-			user: {
-				username: 'David Pte',
-				avatar: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/13240476_10207468828932980_766208754586076978_n.jpg?oh=ae997f0f10403f65499674f5a2869757&oe=579DE806'
-			},
-			url: 'http://materializecss.com/images/office.jpg',
-			likes: 1,
-			liked: true,
-			createdAt: new Date().setDate(new Date().getDate() - 10)
-		}
-	];
-
-	empty(main).appendChild(template(pictures));
+	empty(main).appendChild(template(ctx.pictures));
 })
+
+function loadPictures(ctx, next) {
+	request
+		.get('/api/pictures')
+		.end(function (err, res) {
+			if (err) return console.log(err);		
+			
+			ctx.pictures = res.body  /*context  va cargando datos y los comparte a traves de los middleware*/
+			next();
+		})
+}
