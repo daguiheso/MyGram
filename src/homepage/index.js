@@ -6,7 +6,7 @@ var request = require('superagent');
 var headermidderware = require('../header');
 var axios = require('axios');
 
-page('/', headermidderware, loadPicturesAxios, function (ctx, next) {
+page('/', headermidderware, loadPicturesFetch, function (ctx, next) {
 	title('MyGram');
 	var main = document.getElementById('main-container');
 	empty(main).appendChild(template(ctx.pictures));
@@ -35,4 +35,19 @@ function loadPicturesAxios(ctx, next) {
 	  	.catch(function (err) {
 	    	console.log(err);
 	  	});	
+}
+
+/*fetch nativo en navegadores*/
+function loadPicturesFetch(ctx, next) {
+	fetch('/api/pictures')
+	.then(function (res) {
+		return res.json();  /*este res.json obtiene los datos, mas no el res que llega*/ 
+	})
+	.then(function (pictures) {
+		ctx.pictures = pictures  /*context  va cargando datos y los comparte a traves de los middleware*/
+		next();
+	})
+	.catch(function(err) {
+    	console.log(err);
+	})
 }
