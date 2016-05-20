@@ -3,8 +3,9 @@ var empty = require('empty-element');
 var template = require('./template');
 var title = require('title');
 var request = require('superagent');
+var headermidderware = require('../header')
 
-page('/', loadPictures, function (ctx, next) {
+page('/', headermidderware, loadPictures, function (ctx, next) {
 	title('MyGram');
 	var main = document.getElementById('main-container');
 	empty(main).appendChild(template(ctx.pictures));

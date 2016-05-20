@@ -1,6 +1,6 @@
 var yo = require('yo-yo');
 var translate = require('../translate');
-
+var empty = require('empty-element');
 
 var el = yo`<nav class="header">
 				<div class="nav-wrapper">
@@ -22,4 +22,8 @@ var el = yo`<nav class="header">
 				</div>
 			</nav>`;
 
-document.getElementById('header-container').appendChild(el);
+module.exports = function header (ctx, next) {
+	var container = document.getElementById('header-container')
+	empty(container).appendChild(el); /*empty para que no se dupliquen headers*/
+	next();
+}
