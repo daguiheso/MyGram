@@ -5,7 +5,7 @@ module.exports = {
             'other {# likes}}',
 	logout: 'Logout',
 	english: 'English',
-	Spanish: 'Spanish',
+	spanish: 'Spanish',
 	'signup.subheading': 'Signup to watch your friends\' students',
 	'signup.facebook': 'Signup with Facebook',
     'signup.text': 'Signup',
