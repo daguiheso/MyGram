@@ -6,7 +6,7 @@ var request = require('superagent');
 var headermidderware = require('../header');
 var axios = require('axios');
 
-page('/', headermidderware, loadPicturesFetch, function (ctx, next) {
+page('/', headermidderware, asyncLoad, function (ctx, next) {
 	title('MyGram');
 	var main = document.getElementById('main-container');
 	empty(main).appendChild(template(ctx.pictures));
@@ -50,4 +50,14 @@ function loadPicturesFetch(ctx, next) {
 	.catch(function(err) {
     	console.log(err);
 	})
+}
+
+async function asyncLoad (ctx, next) {
+	try {
+		/*await detiene la ejecucion del proceso hasta que se cumpla la promesa y en caso de  error lo manda al catch*/
+		ctx.pictures = await fetch('/api/pictures').then(res => res.json());   /*return implicitamente por ser una linea de codigo*/
+		next();
+	} catch (err) {
+		return console.log(err);
+	}
 }
