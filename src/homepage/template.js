@@ -2,13 +2,14 @@ var yo = require('yo-yo');
 var layout = require('../layout');
 var picture = require('../picture-card');
 var translate = require('../translate');
+var request = require('superagent');
 
 module.exports = function (pictures) {
 
 	var el = yo`<div class="conatiner timeline">
 					<div class="row">
 						<div class="col s12 m10 offset-m1 l8 offset-l2 center-align">
-							<form enctype="multipart/form-date" class="form-upload" id="formUpload">
+							<form enctype="multipart/form-date" class="form-upload" id="formUpload" onsubmit=${onsubmit}>
 								<div id="fileName" class="fileUpload btn btn-flat cyan">
 									<span>
 										<i class="fa fa-camera" aria-hidden="true"></i>
@@ -47,6 +48,19 @@ module.exports = function (pictures) {
 
 	function onchange () {
 		toggleButtons();
+	}
+
+	function onsubmit (ev) {
+		ev.preventDefault();
+		debugger
+		var data = new FormData(this);
+		request
+			.post('/api/pictures')
+			.send(data)
+			.end(function (err, res) {
+				console.log(arguments);
+			})
+
 	}
 
 	return layout(el);
