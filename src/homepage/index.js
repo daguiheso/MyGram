@@ -5,11 +5,71 @@ var title = require('title');
 var request = require('superagent');
 var headermidderware = require('../header');
 var axios = require('axios');
+var Webcam = require('webcamjs');
+var pictureCard = require('../picture-card');
 
 page('/', headermidderware, asyncLoad, function (ctx, next) {
 	title('MyGram');
 	var main = document.getElementById('main-container');
 	empty(main).appendChild(template(ctx.pictures));
+
+	const picturePreview = $('#picture-preview');
+	const camaraInput = $('#camera-input');
+	const cancelPicture = $('#cancelPicture');
+	const shootButton = $('#shoot');
+	const uploadButton = $('#uploadButton');
+
+	/* function reset form after shoot photo*/
+	function reset() {
+		picturePreview.addClass('hide');
+		uploadButton.addClass('hide');
+		cancelPicture.addClass('hide');
+		shootButton.removeClass('hide');
+		camaraInput.removeClass('hide');
+	}
+
+	cancelPicture.click(reset);
+
+	/* open modal camera - leanModal => materialize method*/
+	$('.modal-trigger').leanModal({
+		/* Ejecuta cuando se dispara modal*/
+		ready: function () {
+			Webcam.attach('#camera-input'); /* config webcamjs*/
+			/* Al tomar foto se añade y quita clase css*/
+			shootButton.click((ev) => {
+				Webcam.snap((data_uri) => {
+					picturePreview.html(`<img src="${data_uri}"/>`);
+					picturePreview.removeClass('hide');
+					uploadButton.removeClass('hide');
+					cancelPicture.removeClass('hide');
+					shootButton.addClass('hide');
+					camaraInput.addClass('hide');
+					uploadButton.off('click'); /* $(elements).off(), se eliminan todos los eventos asociados al conjunto seleccionado*/
+					uploadButton.click(() => {
+						const pic = {
+							url: data_uri,
+							likes: 0,
+							liked: false,
+							createdAt: +new Date(), /* ponemos + para que tome el tampstam*/
+							user: {
+								username: 'Daniel H num 2',
+								avatar: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/12963889_10208901904603330_6870354961841214887_n.jpg?oh=f819a022e52be19cabaabd89d6cb39ce&oe=57E6B7F5'
+							}
+						}
+						/* prepend pone el elemento antes de los otros*/
+						$('#picture-cards').prepend(pictureCard(pic));
+						reset();
+						$('#modalCamara').closeModal();
+					})
+				} );
+			})
+		},
+		/* Ejecuta cuando se cierra modal*/
+		complete: function () {
+			Webcam.reset();
+			reset();
+		}
+	})
 })
 
 /*superagent*/

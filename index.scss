@@ -124,3 +124,14 @@ $avatar-size: 48px;
 		filter: alpha(opacity=0);
 	}
 }
+
+.camera-picture {
+	width: 400px;
+	height: 300px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.modal-footer button {
+	float: none !important;
+}

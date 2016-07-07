@@ -7,12 +7,32 @@ var request = require('superagent');
 module.exports = function (pictures) {
 
 	var el = yo`<div class="conatiner timeline">
+					<div id="modalCamara" class="modal center-align">
+						<div class="modal-content">
+							<div class="camera-picture" id="camera-input"></div>
+							<div class="camera-picture hide" id="picture-preview"></div>
+					    </div>
+					    <div class="modal-footer">
+					    	<button class="waves-effect waves-light btn" id="shoot">
+								<i class="fa fa-camera"></i>
+					    	</button>
+					    	<button class="waves-effect waves-light cyan btn hide" id="uploadButton">
+								<i class="fa fa-cloud-upload"></i>
+					    	</button>
+					    	<button class="waves-effect waves-light red btn hide" id="cancelPicture">
+								<i class="fa fa-times"></i>
+					    	</button>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col s12 m10 offset-m1 l8 offset-l2 center-align">
 							<form enctype="multipart/form-date" class="form-upload" id="formUpload" onsubmit=${onsubmit}>
+								<a class="waves-effect waves-light btn modal-trigger" href="#modalCamara">
+									<i class="fa fa-camera"></i>
+								</a>
 								<div id="fileName" class="fileUpload btn btn-flat cyan">
 									<span>
-										<i class="fa fa-camera" aria-hidden="true"></i>
+										<i class="fa fa-cloud-upload" aria-hidden="true"></i>
 										${translate.message('upload-picture')}
 									</span>
 									<input type="file" id="file" name="picture" class="upload" onchange=${onchange}/>
@@ -27,7 +47,7 @@ module.exports = function (pictures) {
 						</div>
 					</div>
 					<div class="row">
-						<div class="col s12 m10 offset-m1 l6 offset-l3">
+						<div class="col s12 m10 offset-m1 l6 offset-l3" id="picture-cards">
 							${pictures.map(function (pic) {
 								return picture(pic);
 							})}
