@@ -8,7 +8,7 @@ var axios = require('axios');
 var Webcam = require('webcamjs');
 var pictureCard = require('../picture-card');
 
-page('/', headermidderware, asyncLoad, function (ctx, next) {
+page('/', headermidderware, loading, asyncLoad, function (ctx, next) {
 	title('MyGram');
 	var main = document.getElementById('main-container');
 	empty(main).appendChild(template(ctx.pictures));
@@ -71,6 +71,14 @@ page('/', headermidderware, asyncLoad, function (ctx, next) {
 		}
 	})
 })
+
+/*spiner loading - create div*/
+function loading(ctx, next) {
+	var el = document.createElement('div');
+	el.classList.add('loader');
+	document.getElementById('main-container').appendChild(el);
+	next();
+}
 
 /*superagent*/
 function loadPictures(ctx, next) {
