@@ -70,6 +70,51 @@ app.post('/api/pictures', function (req, res) {
 	})
 })
 
+app.get('/api/user/:username', function (req, res) {
+	const user = {
+		username: 'Lore',
+		avatar: 'https://pbs.twimg.com/profile_images/662655718181486592/w22nQBg_.jpg',
+		pictures: [
+			{
+				id: 1,
+				src: 'http://2.bp.blogspot.com/-y0aJ6bN98F0/Upi95Qpe8RI/AAAAAAAAGc4/-L8B-WtJmHY/s1600/Girl_01_Small%202.png',
+				likes: 3,
+				createdAt: new Date().getTime()
+			},
+			{
+				id: 2,
+				src: 'https://blog.eu.playstation.com/files/avatars/avatar_64944.jpg',
+				likes: 31,
+				createdAt: new Date().getTime()
+			},
+			{
+				id: 3,
+				src: 'http://topovideo.com/wp-content/uploads/2015/02/AVATAR-MARION.png',
+				likes: 5,
+				createdAt: new Date().getTime()
+			},
+			{
+				id: 4,
+				src: 'http://metaversemodsquad.files.wordpress.com/2009/11/avatar-1940.jpg',
+				likes: 9,
+				createdAt: new Date().getTime()
+			},
+			{
+				id: 9,
+				src: 'http://www.windowscentral.com/sites/wpcentral.com/files/styles/xlarge_wm_brw/public/field/image/2015/04/xbox-avatars-1.jpg?itok=HqAgDKgJ',
+				likes: 13,
+				createdAt: new Date().getTime()
+			}
+		]
+	}
+
+	res.send(user)
+})
+
+app.get('/:username', function (req, res) {
+	res.render('index', { title: 'MyGram - ${req.params.username}'})
+})
+
 app.listen(3000, function (err) {
 	if (err) return console.log('Hubo un error'), process.exit(1);
 	console.log('Mygram escuchando por el puerto 3000');

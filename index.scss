@@ -3,6 +3,15 @@ $platzigram-red: #f44336;
 
 @import "node_modules/materialize-css/sass/materialize.scss";
 
+@mixin prefix($property, $value, $vendors: webkit moz ms o) {
+  @if $vendors {
+    @each $vendor in $vendors {
+      #{"-" + $vendor + "-" + $property}: #{$value};
+    }
+  }
+  #{$property}: #{$value};
+}
+
 body {
 	background: #fafafa;
 	color: $secondary-color;
