@@ -7,9 +7,21 @@ import template from './template'
 
 page('/:username', headermidderware, loadUser, function (ctx, next) {
 	var main = document.getElementById('main-container')
-	title(`${ctx.params.username}`) /* obteniendo del contexto el parametro*/
+	title(`Platzigram - ${ctx.user.username}`); /* obteniendo del contexto el parametro*/
 	empty(main).appendChild(template(ctx.user))
 	/* no llamamos a next() porque queremos que se resuelva esta ruta*/
+})
+
+page('/:username/:id', headermidderware, loadUser, function (ctx, next) {
+	var main = document.getElementById('main-container')
+	title(`Platzigram - ${ctx.user.username}`); /* obteniendo del contexto el parametro*/
+	empty(main).appendChild(template(ctx.user))
+	/* no llamamos a next() porque queremos que se resuelva esta ruta*/
+	$(`#modal${ctx.params.id}`).openModal({
+		complete: function () {
+			page(`/${ctx.params.username}`)
+		}
+	});
 })
 
 async function loadUser (ctx, next) {

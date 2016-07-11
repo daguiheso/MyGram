@@ -201,3 +201,26 @@ $avatar-size-big: 150px;
     }
   }
 }
+
+.btn.btn-flat {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.loader-container {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  img {
+    max-height: 100%;
+    max-width: 90%;
+  }
+
+  .fa-heart {
+    display: inline-block;
+  }
+}
