@@ -11,3 +11,7 @@ npm install   // instala dependencias
 npm run build // gulp
 npm start //gulp watch and node server
 ```
+
+## Arquitectura Basica
+
+http://i.imgur.com/mSyxrAm.png
