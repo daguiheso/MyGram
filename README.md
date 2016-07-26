@@ -12,6 +12,6 @@ npm run build // gulp
 npm start //gulp watch and node server
 ```
 
-## Arquitectura Basica
+## Arquitectura Basica App
 
 http://i.imgur.com/mSyxrAm.png
