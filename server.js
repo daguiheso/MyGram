@@ -1,17 +1,31 @@
 var express = require('express');
 var multer  = require('multer');
 var ext = require('file-extension');
+var aws = require('aws-sdk')
+var multerS3 = require('multer-s3')
 
-/*https://www.npmjs.com/package/multer#diskstorage*/
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, +Date.now() + '.' + ext(file.originalname))
-  }
+var config = require('./config')
+
+var s3 = new aws.S3({
+	accessKeyId: config.aws.accessKey,
+	secretAccessKey: config.aws.secretKey
 })
- 
+
+/* https://www.npmjs.com/package/multer-s3 */
+var storage = multerS3({
+	s3: s3,
+	bucket: 'mygram',
+	acl: 'public-read', // access control list (visibilidad de los archivos)
+	metadata : function (req, file, cb) {
+		cb(null, { fieldName: file.fieldname })
+	},
+	key: function (req, file, cb) {
+		cb(null, +Date.now() + '.' + ext(file.originalname))
+	}
+
+})
+
+// middleware de upload
 var upload = multer({ storage: storage }).single('picture') /*le pasamos picture que es el atributo name que lleva el input detipo file en el form*/ 
 
 var app = express();
