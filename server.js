@@ -2,6 +2,9 @@ var express = require('express');
 var multer  = require('multer');
 var ext = require('file-extension');
 var aws = require('aws-sdk')
+var cookieParser = require('cookie-parser')
+var bodyParser = require('body-parser')
+var expressSession = require('expressSession')
 var multerS3 = require('multer-s3')
 
 var config = require('./config')
@@ -26,9 +29,38 @@ var storage = multerS3({
 })
 
 // middleware de upload
-var upload = multer({ storage: storage }).single('picture') /*le pasamos picture que es el atributo name que lleva el input detipo file en el form*/ 
+var upload = multer({ storage: storage }).single('picture') /*le pasamos picture que es el atributo name que lleva el input detipo file en el form*/
 
 var app = express();
+
+/*
+ * queremos que express sea capaz de hacer parse de peticions http que contengan un json,
+ * de esta manera cualquier peticion que llegue con un json vamos a poder obtener el obj
+ * json en el body de nuestro request de una manera ya serializada
+ */
+app.use(bodyParser.json())
+
+/*
+ * middleware para poder recibir los params del request que vienen desde un form que los
+ * codifica la peticion http de manera diferente y le pasamos una property que necesita
+ * por defecto y es que el obj que viene no va a ser extendido
+ */
+app.use(bodyParser.urlencoded({ extended: false }))
+
+/* middleware para que express sea capaz de repsonder por el cookieParser */
+app.use(cookieParser)
+/*
+ * expressSession tiene parametros de configuracion:
+ *
+ * secret: clave secreta con la que express va a codificsr parametros de session
+ * resave: para que no vuelva y guarde la sesion y solo lo haga una vez se ponde en false
+ * saveUnitialized: para que no almacene sesiones que no han sido inicializadas en flase se pone
+ */
+app.use(expressSession({
+	secret: config.secret,
+	resave: false,
+	saveUnitialized: false
+}))
 
 /*configurando motor de jade/pug para vistas*/
 app.set('view engine', 'pug');
