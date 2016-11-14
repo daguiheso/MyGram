@@ -4,7 +4,7 @@ var ext = require('file-extension');
 var aws = require('aws-sdk')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
-var expressSession = require('expressSession')
+var expressSession = require('express-session')
 var passport = require('passport')
 var multerS3 = require('multer-s3')
 
@@ -60,7 +60,7 @@ app.use(cookieParser)
 app.use(expressSession({
 	secret: config.secret,
 	resave: false,
-	saveUnitialized: false
+	saveUninitialized: false
 }))
 
 // Inicializando passport
@@ -169,7 +169,7 @@ app.get('/:username/:id', function (req, res) {
 	res.render('index', { title: 'MyGram - ${req.params.username}'})
 })
 
-app.listen(3000, function (err) {
+app.listen(8080, function (err) {
 	if (err) return console.log('Hubo un error'), process.exit(1);
-	console.log('Mygram escuchando por el puerto 3000');
+	console.log('Mygram escuchando por el puerto 8080');
 })
