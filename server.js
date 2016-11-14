@@ -5,6 +5,7 @@ var aws = require('aws-sdk')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var expressSession = require('expressSession')
+var passport = require('passport')
 var multerS3 = require('multer-s3')
 
 var config = require('./config')
@@ -61,6 +62,11 @@ app.use(expressSession({
 	resave: false,
 	saveUnitialized: false
 }))
+
+// Inicializando passport
+app.use(passport.initialize())
+// para persistencia de session
+app.use(passport.session())
 
 /*configurando motor de jade/pug para vistas*/
 app.set('view engine', 'pug');
