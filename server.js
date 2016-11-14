@@ -49,7 +49,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 /* middleware para que express sea capaz de repsonder por el cookieParser */
-app.use(cookieParser)
+app.use(cookieParser())
 /*
  * expressSession tiene parametros de configuracion:
  *
@@ -169,7 +169,7 @@ app.get('/:username/:id', function (req, res) {
 	res.render('index', { title: 'MyGram - ${req.params.username}'})
 })
 
-app.listen(8080, function (err) {
+app.listen(3000, function (err) {
 	if (err) return console.log('Hubo un error'), process.exit(1);
-	console.log('Mygram escuchando por el puerto 8080');
+	console.log('Mygram escuchando por el puerto 3000');
 })
