@@ -6,9 +6,12 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var expressSession = require('express-session')
 var passport = require('passport')
+var mygram = require('MyGram-client')
 var multerS3 = require('multer-s3')
-
 var config = require('./config')
+
+// instancia de cliente
+var client = mygram.createClient(config.client)
 
 var s3 = new aws.S3({
 	accessKeyId: config.aws.accessKey,
@@ -39,7 +42,7 @@ var app = express();
  * de esta manera cualquier peticion que llegue con un json vamos a poder obtener el obj
  * json en el body de nuestro request de una manera ya serializada
  */
-app.use(bodyParser.json())
+app.set(bodyParser.json())
 
 /*
  * middleware para poder recibir los params del request que vienen desde un form que los
@@ -77,9 +80,24 @@ app.use(express.static('public'))  /*app.use define un midleware, e indica a nue
 app.get('/', function (req,res) {
 	res.render('index', { title: 'MyGram'})
 })
+
 app.get('/signup', function (req,res) {
 	res.render('index', { title: 'MyGram - Signup'})
 })
+
+app.post('/signup', function (req,res) {
+	// obteniendo usuario del body gracias a body-parser
+	var user = req.body
+	// console.log(user)
+	client.saveUser(user, function (err, usr) {
+		console.log(usr)
+		if (err) return res.status(500).send(err.message)
+
+		res.redirect('signin')
+		// res.status(200)
+	})
+})
+
 app.get('/signin', function (req,res) {
 	res.render('index', { title: 'MyGram - Signin'})
 })
