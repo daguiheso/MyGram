@@ -7,6 +7,7 @@ var bodyParser = require('body-parser')
 var expressSession = require('express-session')
 var passport = require('passport')
 var mygram = require('MyGram-client')
+var auth = require('./auth')
 var multerS3 = require('multer-s3')
 var config = require('./config')
 
@@ -76,6 +77,14 @@ app.set('view engine', 'pug');
 
 /*Le decimos que public va a estar accesible*/
 app.use(express.static('public'))  /*app.use define un midleware, e indica a nuestro server que se sirva public de manera statica*/
+
+/* utilizando strategia local-strategy */
+passport.use(auth.localStrategy)
+/* le decimos a paspport que metodo utilice para deserializar*/
+passport.deserializeUser(auth.deserilizeUser)
+/* le decimos a passport metodo para serializar users */
+passport.serializeUser(auth.serilizeUser)
+
 /* rutas */
 app.get('/', function (req,res) {
 	res.render('index', { title: 'MyGram'})
@@ -88,9 +97,7 @@ app.get('/signup', function (req,res) {
 app.post('/signup', function (req,res) {
 	// obteniendo usuario del body gracias a body-parser
 	var user = req.body
-	// console.log(user)
 	client.saveUser(user, function (err, usr) {
-		console.log(usr)
 		if (err) return res.status(500).send(err.message)
 
 		res.redirect('signin')
