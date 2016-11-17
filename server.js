@@ -81,9 +81,9 @@ app.use(express.static('public'))  /*app.use define un midleware, e indica a nue
 /* utilizando strategia local-strategy */
 passport.use(auth.localStrategy)
 /* le decimos a paspport que metodo utilice para deserializar*/
-passport.deserializeUser(auth.deserilizeUser)
+passport.deserializeUser(auth.deserializeUser)
 /* le decimos a passport metodo para serializar users */
-passport.serializeUser(auth.serilizeUser)
+passport.serializeUser(auth.serializeUser)
 
 /* rutas */
 app.get('/', function (req,res) {
@@ -108,6 +108,35 @@ app.post('/signup', function (req,res) {
 app.get('/signin', function (req,res) {
 	res.render('index', { title: 'MyGram - Signin'})
 })
+
+/*
+ * defino ruta de login y le defino el middleware de auth, passport jstiene un metodo llamado
+ * authenticate en el cual yo le defino con que estartegia voy a autenticar y los parametros de
+ * configuracion de esa estrategia.
+ */
+app.post('/login', passport.authenticate('local', {
+	// cuando login sea exitoso ir a la ruta principal
+	successRedirect: '/',
+	// si hubo un error mandar de nuevo a login
+	failureRedirect: '/signin'
+}))
+
+/* funcion que es un middleware que me va a permitir garantizar que el usuario fue autenticado
+ * De esta manera si yo intento entrar a una ruta que esta protegida por este middleware el me
+ * va a decir que no estoy autenticado
+ */
+function ensureAuth (req, res, next) {
+	/*
+	 * metodo de passport que se injecta al objeto de request y se llama isAuthenticate() y si el
+	 * usuario fue autenticado correctamente usando una de las estrategias definidas este objeto
+	 * isAuthenticate retorna true, si no false
+	 */
+	if (req.isAuthenticated()) {
+		return next()
+	}
+
+	res.status(401).send( { error: 'not authenticated' })
+}
 
 app.get('/api/pictures', function (req, res) {
 	var pictures = [
@@ -136,7 +165,11 @@ app.get('/api/pictures', function (req, res) {
 	setTimeout(() => res.send(pictures), 2000);
 })
 
-app.post('/api/pictures', function (req, res) {
+/*
+ * El middlewrae que queremos asegurar es el de guardar imagen "POST /picture", entonces toda ruta en express recibe como primer
+ * argumento el nombre de la ruta y puede recibir como segundo argumento un middleware para que solo se ejecute para esa ruta
+ */
+app.post('/api/pictures', ensureAuth, function (req, res) {
 	upload(req, res, function (err) {
 		if(err) {
 			return res.send(500, "Error uploading file")

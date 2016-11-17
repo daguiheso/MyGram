@@ -14,6 +14,7 @@ exports.localStrategy = new LocalStrategy((username, password, done) => {
 
     // obteniendo info del user
     client.getUser(username, (err, user) => {
+
       if (err) {
         return done(null, false, { message: `an error ocurred: ${err.message}` })
       }
@@ -26,8 +27,8 @@ exports.localStrategy = new LocalStrategy((username, password, done) => {
 })
 
 // serializacion del user
-exports.serializationUser = function (user, done) {
-  // lamando callback
+exports.serializeUser = function (user, done) {
+  // llamando callback
   done(null, {
     username: user.username,
     token: user.token
@@ -35,7 +36,9 @@ exports.serializationUser = function (user, done) {
 }
 
 // deserializar user
-exports.deserilizeUser = function (user, done) {
+exports.deserializeUser = function (user, done) {
+
+    // console.log('getUser usr:'+ user.token)
   client.getUser(user.username, (err, usr) => {
     // dando token a user
     usr.token = user.token
