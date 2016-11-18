@@ -1,4 +1,5 @@
 var LocalStrategy = require('passport-local').Strategy
+var FacebookStrategy = require('passport-facebook').Strategy
 var mygram = require('MyGram-client')
 var config = require('../config')
 
@@ -24,6 +25,46 @@ exports.localStrategy = new LocalStrategy((username, password, done) => {
       return done(null, user)
     })
   })
+})
+
+/*
+ * Intanciamos la clase y esta en vez de una funcion como localStrategy, me recibe como
+ * primer argumento un objeto de configuración y como segundo param el callback que recibe
+ * los datos que vienen del proceso de auth
+ */
+exports.facebookStrategy = new FacebookStrategy({
+  // app Id
+  clientId: config.auth.facebook.clientId,
+  // app secret
+  clientSecret: config.auth.facebook.clientSecret,
+  // url del cb en la cual recibo los params de auth
+  callbackURL: config.auth.facebook.callbackURL,
+  // fields from perfil FB
+  profileFields: ['id', 'displayName', 'email']
+}, function (accessToken, refreshToken, profile, done) {
+  var userProfile = {
+    username: profile._json.id,
+    name: profile._json.name,
+    email: profile._json.email,
+    facebook: true // propiedad para saber si es un user social o no
+  }
+
+  findOrCreate(userProfile, (err, user) => {
+    // retorno de callback
+    return done(null, user)
+  })
+
+  // funcion buscar user o crearlo
+  function findOrCreate (user, cb) {
+    client.getUser(user.username, (err, usr) => {
+      if (err) {
+        return client.saveUser(user, cb)
+      }
+
+      // llamando cb sin ningun error y le mando el user obtenido de la DB
+      cb(null, usr)
+    })
+  }
 })
 
 // serializacion del user
