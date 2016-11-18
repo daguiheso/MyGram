@@ -55,10 +55,12 @@ exports.facebookStrategy = new FacebookStrategy({
 
     // generando y firmando nuevo token
     jwt.sign({ userId: user.username}, config.secret, {}, (e, token) => {
-      if (e) return done(null e)
+      if (e) return done(e)
+
+      user.token = token
+      // retorno de callback
+      return done(null, user)
     })
-    // retorno de callback
-    return done(done)
   })
 
   // funcion buscar user o crearlo
