@@ -1,6 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy
 var FacebookStrategy = require('passport-facebook').Strategy
 var mygram = require('MyGram-client')
+var jwt = require('jsonwebtoken')
 var config = require('../config')
 
 var client = mygram.createClient(config.client)
@@ -50,8 +51,14 @@ exports.facebookStrategy = new FacebookStrategy({
   }
 
   findOrCreate(userProfile, (err, user) => {
+    if (err) return done(err)
+
+    // generando y firmando nuevo token
+    jwt.sign({ userId: user.username}, config.secret, {}, (e, token) => {
+      if (e) return done(null e)
+    })
     // retorno de callback
-    return done(null, user)
+    return done(done)
   })
 
   // funcion buscar user o crearlo
