@@ -10,6 +10,7 @@ var mygram = require('MyGram-client')
 var auth = require('./auth')
 var multerS3 = require('multer-s3')
 var config = require('./config')
+var port = process.env.PORT || 5050
 
 // instancia de cliente
 var client = mygram.createClient(config.client)
@@ -80,6 +81,7 @@ app.use(express.static('public'))  /*app.use define un midleware, e indica a nue
 
 /* utilizando strategia local-strategy */
 passport.use(auth.localStrategy)
+passport.use(auth.facebookStrategy)
 /* le decimos a paspport que metodo utilice para deserializar*/
 passport.deserializeUser(auth.deserializeUser)
 /* le decimos a passport metodo para serializar users */
@@ -110,11 +112,33 @@ app.get('/signin', function (req,res) {
 })
 
 /*
- * defino ruta de login y le defino el middleware de auth, passport jstiene un metodo llamado
- * authenticate en el cual yo le defino con que estartegia voy a autenticar y los parametros de
+ * defino ruta de login y le defino el middleware de auth, passport js tiene un metodo llamado
+ * authenticate en el cual yo le defino con que estrategia voy a autenticar y los parametros de
  * configuracion de esa estrategia.
  */
 app.post('/login', passport.authenticate('local', {
+	// cuando login sea exitoso ir a la ruta principal
+	successRedirect: '/',
+	// si hubo un error mandar de nuevo a login
+	failureRedirect: '/signin'
+}))
+
+/*
+ * implementacion de strategia de fb y como 2 param los permisos de nuestra app con FB,
+ * pues passport js permite que le pasemos estos permisos a FB asi que le pedimos en este
+ * caso el permiso de obtener el email del usuario, estos permisos se los pasamos con una
+ * propiedad llamada scope, puede ser un array o un string para un solo permiso. De esta
+ * manera ya le digo a FB que me autentique y me lanza una modal de navegador de FB.
+ *
+ * Pero necesitamos crear otra ruta que es la que recibe los tokens que llegan de FB
+ */
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email']}))
+
+/*
+ * ruta donde recibo la informacion de FB, utilizamos nuevamente la estrategia de FB y
+ * muy parecido a la strategia local le pasamos parametros
+ */
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 	// cuando login sea exitoso ir a la ruta principal
 	successRedirect: '/',
 	// si hubo un error mandar de nuevo a login
@@ -227,7 +251,7 @@ app.get('/:username/:id', function (req, res) {
 	res.render('index', { title: 'MyGram - ${req.params.username}'})
 })
 
-app.listen(3000, function (err) {
+app.listen(port, function (err) {
 	if (err) return console.log('Hubo un error'), process.exit(1);
-	console.log('Mygram escuchando por el puerto 3000');
+	console.log('Mygram escuchando por el puerto ' + port);
 })

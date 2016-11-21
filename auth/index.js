@@ -35,7 +35,7 @@ exports.localStrategy = new LocalStrategy((username, password, done) => {
  */
 exports.facebookStrategy = new FacebookStrategy({
   // app Id
-  clientId: config.auth.facebook.clientId,
+  clientID: config.auth.facebook.clientId,
   // app secret
   clientSecret: config.auth.facebook.clientSecret,
   // url del cb en la cual recibo los params de auth
@@ -65,8 +65,12 @@ exports.facebookStrategy = new FacebookStrategy({
 
   // funcion buscar user o crearlo
   function findOrCreate (user, cb) {
+    console.log('IN FUNCTION FINDORCREATE' + JSON.stringify(user, null, 4));
     client.getUser(user.username, (err, usr) => {
+      console.log('GET USER ERROR FINDORCREATE' + JSON.stringify(err, null, 4));
+      console.log('GET USER FINDORCREATE' + JSON.stringify(usr, null, 4));
       if (err) {
+        console.log('entro al if error')
         return client.saveUser(user, cb)
       }
 
