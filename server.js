@@ -123,6 +123,13 @@ app.post('/login', passport.authenticate('local', {
 	failureRedirect: '/signin'
 }))
 
+app.get('/logout', function (req, res) {
+	// passport js me entrega un metodo logout() dentro del request
+	req.logout()
+
+	res.redirect('/')
+})
+
 /*
  * implementacion de strategia de fb y como 2 param los permisos de nuestra app con FB,
  * pues passport js permite que le pasemos estos permisos a FB asi que le pedimos en este
