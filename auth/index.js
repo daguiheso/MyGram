@@ -95,6 +95,8 @@ exports.deserializeUser = function (user, done) {
     // console.log('getUser usr:'+ user.token)
   client.getUser(user.username, (err, usr) => {
     // dando token a user
+    console.log('USR ERROR ERROR' + JSON.stringify(usr, null, 4));
+
     usr.token = user.token
     done(err, usr)
   })

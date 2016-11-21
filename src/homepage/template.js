@@ -59,12 +59,12 @@ module.exports = function (pictures) {
 		document.getElementById('fileName').classList.toggle('hide');
 		document.getElementById('btnUpload').classList.toggle('hide');
 		document.getElementById('btnCancel').classList.toggle('hide');
-	}			
-	
+	}
+
 	function cancel () {
 		toggleButtons();
 		document.getElementById('formUpload').reset();
-	}				
+	}
 
 	function onchange () {
 		toggleButtons();

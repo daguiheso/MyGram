@@ -3,16 +3,16 @@ import headermidderware from '../header'
 import title from 'title'
 import empty from 'empty-element'
 import template from './template'
+import utils from '../utils'
 
-
-page('/:username', headermidderware, loadUser, function (ctx, next) {
+page('/:username', loadUser, utils.loadAuth, headermidderware, function (ctx, next) {
 	var main = document.getElementById('main-container')
 	title(`Platzigram - ${ctx.user.username}`); /* obteniendo del contexto el parametro*/
 	empty(main).appendChild(template(ctx.user))
 	/* no llamamos a next() porque queremos que se resuelva esta ruta*/
 })
 
-page('/:username/:id', headermidderware, loadUser, function (ctx, next) {
+page('/:username/:id', loadUser, utils.loadAuth, headermidderware, function (ctx, next) {
 	var main = document.getElementById('main-container')
 	title(`Platzigram - ${ctx.user.username}`); /* obteniendo del contexto el parametro*/
 	empty(main).appendChild(template(ctx.user))

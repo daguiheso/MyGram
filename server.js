@@ -162,6 +162,15 @@ function ensureAuth (req, res, next) {
 	res.status(401).send( { error: 'not authenticated' })
 }
 
+app.get('/whoami',function (req, res) {
+	if (req.isAuthenticated()) {
+		// devolviendo el usuario que esta en el objeto de request, en el request queda la info del usuario autenticado
+		return res.json(req.user)
+	}
+	// respondemos con objeto de usuario no autenticado
+	res.json({ auth: false})
+})
+
 app.get('/api/pictures', function (req, res) {
 	var pictures = [
 		{
