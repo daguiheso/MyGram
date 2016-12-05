@@ -6,7 +6,7 @@ var request = require('superagent');
 
 module.exports = function (pictures) {
 
-	var el = yo`<div class="conatiner timeline">
+	var el = yo`<div class="container timeline">
 					<div id="modalCamara" class="modal center-align">
 						<div class="modal-content">
 							<div class="camera-picture" id="camera-input"></div>
@@ -72,7 +72,6 @@ module.exports = function (pictures) {
 
 	function onsubmit (ev) {
 		ev.preventDefault();
-		debugger
 		var data = new FormData(this);
 		request
 			.post('/api/pictures')

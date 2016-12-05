@@ -179,30 +179,26 @@ app.get('/whoami',function (req, res) {
 })
 
 app.get('/api/pictures', function (req, res) {
-	var pictures = [
-		{
-			user: {
-				username: 'Daniel H',
-				avatar: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/12963889_10208901904603330_6870354961841214887_n.jpg?oh=f819a022e52be19cabaabd89d6cb39ce&oe=57E6B7F5'
-			},
-			url: 'http://materializecss.com/images/office.jpg',
-			likes: 0,
-			liked: false,
-			createdAt: new Date().getTime()
-		},
-		{
-			user: {
-				username: 'David Pte',
-				avatar: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/13240476_10207468828932980_766208754586076978_n.jpg?oh=ae997f0f10403f65499674f5a2869757&oe=579DE806'
-			},
-			url: 'http://materializecss.com/images/office.jpg',
-			likes: 1,
-			liked: true,
-			createdAt: new Date().setDate(new Date().getDate() - 10)
-		}
-	];
 
-	setTimeout(() => res.send(pictures), 2000);
+	client.listPictures(function (err, pictures) {
+		if (err) return res.send([])
+		console.log(pictures)
+		res.send(pictures)
+	})
+	// var pictures = [
+	// 	{
+	// 		user: {
+	// 			username: 'Daniel H',
+	// 			avatar: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/12963889_10208901904603330_6870354961841214887_n.jpg?oh=f819a022e52be19cabaabd89d6cb39ce&oe=57E6B7F5'
+	// 		},
+	// 		url: 'http://materializecss.com/images/office.jpg',
+	// 		likes: 0,
+	// 		liked: false,
+	// 		createdAt: new Date().getTime()
+	// 	}
+	// ];
+
+	// setTimeout(() => res.send(pictures), 2000);
 })
 
 /*
@@ -212,9 +208,30 @@ app.get('/api/pictures', function (req, res) {
 app.post('/api/pictures', ensureAuth, function (req, res) {
 	upload(req, res, function (err) {
 		if(err) {
-			return res.send(500, "Error uploading file")
+			return res.send(500, `Error uploading file: ${err.message}`)
 		}
-		res.send('File uploaded')
+		
+		var user = req.user;
+		var token = req.user.token;
+		var username = req.user.username;
+		var src = req.file.location;
+
+		client.savePicture({
+			src: src,
+			userId: username,
+			user: {
+				username: username,
+				avatar: user.avatar,
+				name: user.name
+			}
+		},
+		token, function (err, img) {
+			if (err) {
+				return res.status(500).send(err.message)
+			}
+
+			res.send(`File uploaded: ${req.file.location}`)
+		})
 	})
 })
 
